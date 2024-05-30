@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Categorias;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Response as BrowserKitResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -22,7 +19,7 @@ class CategoriasController extends AbstractController
             'controller_name' => 'CategoriasController',
         ]);
     }
-
+     
     #[Route('/insertar', name: 'insertar')]
     public function insertar(ManagerRegistry $doctrine): Response
     {
@@ -33,28 +30,29 @@ class CategoriasController extends AbstractController
         $gestorEntidades->persist($categoria);
         $gestorEntidades->flush();
 
-
         return new Response("Categoria insertada con ID" .
             $categoria->getId());
     }
 
     #[Route('/insertar/{categoria}', name: 'insertarParam')]
-    public function insertarParam(EntityManagerInterface $gestorEntidades, string $categoria): Response
-    {
+    public function insertarParam(
+        EntityManagerInterface $gestorEntidades,
+        string $categoria
+    ): Response {
         $nuevaCategoria = new Categorias();
         $nuevaCategoria->setCategoria($categoria);
 
         $gestorEntidades->persist($nuevaCategoria);
         $gestorEntidades->flush();
 
-
         return new Response("Categoria insertada con ID" .
             $nuevaCategoria->getId());
     }
 
     #[Route('/insertar-array', name: 'insertarArray')]
-    public function insertarArray(EntityManagerInterface $gestorEntidades): Response
-    {
+    public function insertarArray(
+        EntityManagerInterface $gestorEntidades
+    ): Response {
         $categorias = array(
             'categoria1' => array(
                 'nombre' => 'Lagartija'
@@ -66,15 +64,15 @@ class CategoriasController extends AbstractController
                 'nombre' => 'Capullo'
             ),
         );
+
         foreach ($categorias as $categoria) {
             $nuevaCategoria = new Categorias();
             $nuevaCategoria->setCategoria($categoria['nombre']);
 
             $gestorEntidades->persist($nuevaCategoria);
             $gestorEntidades->flush();
-
-
-            return new Response("Categorias insertadas");
         }
+
+        return new Response("Categorias insertadas");
     }
 }
