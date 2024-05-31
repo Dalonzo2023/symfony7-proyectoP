@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Categorias;
 use App\Entity\Pokemons;
 use App\Repository\PokemonsRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +51,7 @@ class PokemonsController extends AbstractController
     }
     
     //5 Consulta completa (findAll)
-    #[Route('/verPokemons', name: 'verPokemons')]
+    #[Route('/verPokemons', name: 'verpokemons')]
     public function verPokemons(EntityManagerInterface $gestorEntidades): Response
     {
         $repoPokemons= $gestorEntidades->getRepository(Pokemons::class);
@@ -126,6 +127,42 @@ class PokemonsController extends AbstractController
 
         return new JsonResponse($datos);
         //return $this->json($datos);
+    }
+
+    //09. Actualizar con parámetros
+    #[Route('/actualizar/{id}/{altura}/{peso}', name: 'actualizarparams')]
+    public function actualizarParams(ManagerRegistry $doctrine, int $id, int $altura, float $peso): Response
+    {
+        $gestorEntidades= $doctrine->getManager();
+        //Sacamos el pokemon que vamos a actualizar
+        $repoPokemons= $gestorEntidades->getRepository(Pokemons::class);
+        $pokemon= $repoPokemons->find($id);
+        
+        if(!$pokemon){
+          throw $this->createNotFoundException("Pokemon NO encontrado");
+          
+        }
+        $pokemon->setAltura($altura);
+        $pokemon->setPeso($peso);
+         //actualizar
+        $gestorEntidades->flush();
+
+       //vamos a hacer una redireccion
+       return $this->redirectToRoute('app_pokemons_verpokemons');
+    }
+
+     //10. eliminación con parámetro
+    #[Route('/eliminar/{id}', name: 'eliminar')]
+    public function eliminar(EntityManagerInterface $gestorEntidades, int $id): Response
+    {
+        $repoPokemons= $gestorEntidades->getRepository(Pokemons::class);
+        $pokemon= $repoPokemons->find($id);
+
+        //Borro y actualizo
+        $gestorEntidades->remove($pokemon);
+        $gestorEntidades->flush();
+
+        return new Response("Pokemon eliminado con ID: " . $id);
     }
 
 }

@@ -53,5 +53,13 @@ class AleatoriosController extends AbstractController
         ]);
     }
 
+    #[Route('/menu', name: 'menu')]
+    public function menu(): Response
+    {
+        return $this->render('aleatorios/menu.twig', [
+            'controller_name' => 'Menu',
+        ]);
+    }
+
     
 }
