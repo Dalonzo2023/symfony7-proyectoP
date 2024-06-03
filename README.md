@@ -1,6 +1,14 @@
 # Pokedex
 
-## 1. Crear y borrar base de datos
+## 1. Dependencias
+```console
+composer require --dev symfony/maker-bundle
+composer require twig
+composer require symfony/orm-pack
+composer require symfony/form
+```
+
+## 2. Crear y borrar base de datos
 ```console
 php bin/console doctrine:database:drop --force
 php bin/console doctrine:database:create
@@ -10,7 +18,7 @@ php bin/console doctrine:migrations:migrate
 -create->Creas la base de datos
 -migrate->Introduces las tablas
 
-## Endpoints (direcciones)
+## 3. Endpoints (direcciones)
 - localhost:8000/categorias/insertar
 - localhost:8000/categorias/insertar/Semilla
 - localhost:8000/categorias/insertar-array
@@ -27,6 +35,7 @@ php bin/console doctrine:migrations:migrate
 - localhost:8000/pokemons/verPokemonsOrdenadosJSON/0
 - localhost:8000/pokemons/actualizar/2/40/80
 - localhost:8000/pokemons/eliminar/2
+- localhost:8000/pokemons/formulario
 
 ## tarea
 -

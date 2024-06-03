@@ -17,38 +17,19 @@
         <li>Your template at <code>/var/www/html/Pokedex/templates/pokemons/index.html.twig</code></li>
     </ul>
 </div>
+<style>
+    input, select{margin-bottom: 20px;}
+</style>
 
 <section class="container mt-4">
-<h1>Lista Pokemons</h1>
-<table class="table table-striped">
-<thead>
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Altaura</th>
-        <th>Peso</th>
-        <th>Sexo</th>
-        <th>Categoria</th>
-    </tr>
-</thead>
-<tbody>
-    {% for pokemon in Bichos %}
-    <tr>
-        <td>{{pokemon.id}}</td>
-        <td>{{pokemon.nombre}}</td>
-        <td>{{pokemon.altura}}</td>
-        <td>{{pokemon.peso}}</td>
-        <td>{% if pokemon.sexo%} Hembra
-            {% else %} Macho
-            {% endif %}
-        </td>
-        <td>{{pokemon.idCategoria.categoria}}</td>
-    </tr>
-
-    {% endfor %}
-</tbody>
-
-</table>
+<nav class="row justify-content-center">
+    <article class="col-6 bg-primary text-white p-4 rounded">
+        <h1>Formulario Pokemons</h1>
+        {{ form(formulario) }}
+    </article>
+    
+</nav>
+    
 
 
 </section>
