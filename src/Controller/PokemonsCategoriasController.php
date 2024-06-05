@@ -1,62 +1,48 @@
 <?php
-
 namespace App\Controller;
 
-use App\Entity\Categoria;
 use App\Entity\Categorias;
-use App\Entity\Pokemon;
 use App\Entity\Pokemons;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PokemonsCategoriasController extends AbstractController
 {
-    #[Route('/pokemons/categorias', name: 'app_pokemons_categorias')]
-    public function index(): Response
-    {
-        return $this->render('pokemons_categorias/index.html.twig', [
-            'controller_name' => 'PokemonsCategoriasController',
-        ]);
-    }
+    #[Route('/pokemons/insertar-con-categorias/{categoria}/{nombrePokemon}/{altura}/{peso}/{sexo}', 
+    name: 'app_pokemons_categorias_')]
+    public function insertar(
+        string $categoria,
+        string $nombrePokemon,
+        int $altura,
+        float $peso,
+        bool $sexo,
+        EntityManagerInterface $entityManager
+    ): Response {
+        // Crear una nueva categoría y persistirla
+        $categorias = new Categorias();
+        $categorias->setCategoria($categoria);
+        $entityManager->persist($categorias);
 
+        // Crear un nuevo Pokémon asociado a la categoría y persistirlo
+        $nuevoPokemon = new Pokemons();
+        $nuevoPokemon->setNombre($nombrePokemon);
+        $nuevoPokemon->setAltura($altura);
+        $nuevoPokemon->setPeso($peso);
+        $nuevoPokemon->setSexo($sexo);
+        $nuevoPokemon->setIdCategoria($categorias);
+        $entityManager->persist($nuevoPokemon);
 
-    #[Route('/pokemons/insertar-con-categorias/categoria/nombreP/altura/peso/sexo', name: 'insertar_con_categorias')]
-    public function insertarConCategorias(
-       $categoria,
-       $nombreP,
-       $altura,
-       $peso,
-       $sexo,
-       EntityManagerInterface $em 
-    ): Response
-    {
-        // Crear y persistir la categoría
-        $categoriaEntity = new Categorias;
-        $categoriaEntity->setCategoria($categoria);
-        $em->persist($categoriaEntity);
+        // Guardar los cambios en la base de datos
+        $entityManager->flush();
 
-        // Crear y persistir el Pokémon
-        $pokemon = new Pokemons();
-        $pokemon->setNombre($nombreP);
-        $pokemon->setAltura($altura);
-        $pokemon->setPeso($peso);
-        $pokemon->isSexo($sexo);
-        $pokemon->setIdCategoria($categoriaEntity);
-        $em->persist($pokemon);
-
-        // Guardar cambios en la base de datos
-        $em->flush();
-
-        // Obtener listas actualizadas
-        $pokemons = $em->getRepository(Pokemons::class)->findAll();
-        $categorias = $em->getRepository(Categorias::class)->findAll();
-        // Renderizar la vista con Twig
-        return $this->render('pokemons_categorias/list.html.twig', [
-            'pokemons' => $pokemons,
-            'categorias' => $categorias,
-        ]);
         
+        //return $this->redirectToRoute("app_pokemons_verpokemons") ;
+        // Renderizar
+        return $this->render('pokemons_categorias/index.html.twig', [
+            'pokemons' => [$nuevoPokemon],
+            'categorias' => [$categorias],
+        ]);
     }
 }

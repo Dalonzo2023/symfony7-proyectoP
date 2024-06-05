@@ -205,7 +205,8 @@ class PokemonsController extends AbstractController
                     "attr"=> ["class"=> "form-select"]
                 ])
 
-             ->add("guardar", SubmitType::class, [
+             ->add("guardar", SubmitType::class, 
+             ["attr" => ["class" => "btn btn-danger"],
                 "label" => "Insertar Pokemon"])
              ->getForm();
 

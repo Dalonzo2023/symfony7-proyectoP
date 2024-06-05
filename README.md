@@ -38,4 +38,4 @@ php bin/console doctrine:migrations:migrate
 - localhost:8000/pokemons/formulario
 
 ## tarea
--
+-localhost:8000/pokemons/insertar-con-categorias/cangrejo/kingler/130/60/1

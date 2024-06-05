@@ -4,32 +4,66 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+
+    .example-wrapper code {
+        background: #F5F5F5;
+        padding: 2px 6px;
+    }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello PokemonsCategoriasController! ✅</h1>
 
     This friendly message is coming from:
     <ul>
-        <li>Your controller at <code>/var/www/html/Pokedex/src/Controller/PokemonsCategoriasController.php</code></li>
-        <li>Your template at <code>/var/www/html/Pokedex/templates/pokemons_categorias/index.html.twig</code></li>
+        <li>Your controller at
+            <code>/var/www/html/Proyectos/Pokedex/src/Controller/PokemonsCategoriasController.php</code>
+        </li>
+        <li>Your template at <code>/var/www/html/Proyectos/Pokedex/templates/pokemons_categorias/index.html.twig</code>
+        </li>
     </ul>
 </div>
-<section>
-    <h1>Lista de Pokémons</h1>
-    <ul>
-        {% for pokemon in pokemons %}
-            <li>{{ pokemon.nombreP }} - Altura: {{ pokemon.altura }} - Peso: {{ pokemon.peso }} - Sexo: {{ pokemon.sexo }} - Categoría: {{ pokemon.categoria.nombre }}</li>
-        {% endfor %}
-    </ul>
 
-    <h1>Lista de Categorías</h1>
-    <ul>
+<section class="container mt-4">
+    <h1>Pokemons</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Altura</th>
+                <th>Peso</th>
+                <th>Sexo</th>
+                <th>Categoria</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pokemon in pokemons %}
+            <tr>
+                <td>{{ pokemon.id }}</td>
+                <td>{{ pokemon.nombre }}</td>
+                <td>{{ pokemon.altura }}</td>
+                <td>{{ pokemon.peso }}</td>
+                <td>{{ pokemon.sexo ? 'Macho' : 'Hembra' }}</td>
+                <td>{{ pokemon.idCategoria.categoria }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="container mt-4">
+    <h1>Categorías</h1>
+    <ol>
         {% for categoria in categorias %}
-            <li>{{ categoria.nombre }}</li>
+            <li>{{ categoria.categoria }}</li>
         {% endfor %}
-    </ul>
+    </ol>
 </section>
 {% endblock %}
